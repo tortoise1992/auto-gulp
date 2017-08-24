@@ -15,6 +15,13 @@ const rev=require('gulp-rev')
 const imageMin=require('gulp-imagemin')
 const uglify=require('gulp-uglify')
 const server=require('browser-sync')
+const less=require('gulp-less')
+
+gulp.task('handle-less',function () {
+    gulp.src(devDir+'/less/**/*.less')
+    .pipe(less())
+    .pipe(gulp.dest(devDir+'/css'))
+})
 
 gulp.task('copy-html',function () {
     gulp.src(devDir+'/**/*.html')
@@ -77,8 +84,8 @@ gulp.task('server', function() {
             baseDir: devDir
         }
     });
-
-    gulp.watch([devDir+'/html/*.html',devDir+'/index.html', devDir+'/css/**/*.css', devDir+'/img/**/*.{jpg,png,gif}',devDir+'/js/**/*.js'], {cwd: devDir}, server.reload);
+    gulp.watch(devDir+'/less/**/*.less',['handle-less'])
+    gulp.watch([devDir+'/**/*.html', devDir+'/css/**/*.css', devDir+'/img/**/*.{jpg,png,gif}',devDir+'/js/**/*.js'], {cwd: devDir}, server.reload);
 });
 
 
